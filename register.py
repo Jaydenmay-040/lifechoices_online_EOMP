@@ -34,7 +34,7 @@ class Login:
 
         label3 = Label(frame_input, text="Password", font=("Arial", 20, 'bold'), fg="black", bg='white')
         label3.place(x=30, y=195)
-        self.password = Entry(frame_input, font=("Arial", 15, 'bold'), bg='lightgray')
+        self.password = Entry(frame_input, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
         self.password.place(x=30, y=245, width=270, height=35)
 
         btn1 = Button(frame_input, text="forgot password?", cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
@@ -65,6 +65,56 @@ class Login:
 
     def Register(self):
 
+        Frame_login = Frame(self.window, bg='white')
+        Frame_login.place(x=0, y=0, height=700, width=1366)
+
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Frame_login, image=self.img).place(x=0, y=0, width=1366, height=700)
+
+        frame_input2 = Frame(self.window, bg='white')
+        frame_input2.place(x=320, y=100, height=520, width=630)
+
+        label1 = Label(frame_input2, text="Register Here", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label1.place(x=45, y=20)
+
+        label2 = Label(frame_input2, text='First Name', font=('Arial', 20, "bold"), bg='white')
+        label2.place(x=30, y=95)
+        self.name_entry = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.name_entry.place(x=30, y=145, width=270, height=35)
+
+        label3 = Label(frame_input2, text="ID Number", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label3.place(x=30, y=195)
+        self.ID_entry2 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.ID_entry2.place(x=30, y=245, width=270, height=35)
+
+        label4 = Label(frame_input2, text="Last Name", font=("Arial", 20, "bold"), fg='black', bg='white')
+        label4.place(x=330, y=95)
+        self.last_entry3 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.last_entry3.place(x=330, y=145, width=270, height=35)
+
+        label5 = Label(frame_input2, text='Phone Number', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label5.place(x=330, y=195)
+        self.number_entry4 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.number_entry4.place(x=330, y=245, width=270, height=35)
+
+        nxt_label = Label(frame_input2, text="Next of Kin Details", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        nxt_label.place(x=180, y=295)
+
+        label6 = Label(frame_input2, text="Name", font=("Arial", 20, "bold"), fg='black', bg='white')
+        label6.place(x=30, y=350)
+        self.nxt_entry5 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.nxt_entry5.place(x=30, y=400, width=270, height=35)
+
+        label7 = Label(frame_input2, text='Next Phone Number', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label7.place(x=330, y=350)
+        self.nxt_num_entry6 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.nxt_num_entry6.place(x=330, y=400, width=270, height=35)
+
+        btn = Button(frame_input2, command=self.nxtRegister, text="Next", cursor="hand2", font=('Arial', 15),
+                      fg='black', bg='#8dc63f', bd=0, width=15, height=1)
+        btn.place(x=90, y=470)
+
+    def nxtRegister(self):
         Frame_login1 = Frame(self.window, bg='white')
         Frame_login1.place(x=0, y=0, height=700, width=1366)
 
@@ -84,7 +134,7 @@ class Login:
 
         label3 = Label(frame_input2, text="Password", font=('Arial', 20, 'bold'), fg='black', bg='white')
         label3.place(x=30, y=195)
-        self.entry2 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.entry2 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray', show="*")
         self.entry2.place(x=30, y=245, width=270, height=35)
 
         label4 = Label(frame_input2, text="Email", font=("Arial", 20, "bold"), fg='black', bg='white')
@@ -94,7 +144,7 @@ class Login:
 
         label5 = Label(frame_input2, text='Confirm Password', font=('Arial', 20, 'bold'), fg='black', bg='white')
         label5.place(x=330, y=195)
-        self.entry4 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.entry4 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray', show="*")
         self.entry4.place(x=330, y=245, width=270, height=35)
 
         btn2 = Button(frame_input2, command=self.register, text="Register", cursor="hand2", font=('Arial', 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
@@ -104,20 +154,20 @@ class Login:
         btn3.place(x=110, y=390)
 
     def register(self):
-        if self.entry.get() == "" or self.entry2.get() == "" or self.entry3.get() == "" or self.entry4.get() == "":
+        if self.entry.get() == "" or self.entry2.get() == "" or self.entry3.get() == "" or self.entry4.get() == "" or self.name_entry == "" or self.ID_entry2 == "" or self.last_entry3 == "" or self.number_entry4 == "":
             messagebox.showerror("Error", "All Fields Are Required", parent=self.window)
         elif self.entry2.get()!=self.entry4.get():
             messagebox.showerror("Error", "Password and Confirm Password Should Be The Same", parent=self.window)
         else:
             try:
-                con=pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_Online')
+                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_Online')
                 cur = con.cursor()
-                cur.execute("select * from register where email=%s", self.entry3.get())
+                cur.execute("select * from details where email=%s", self.entry3.get())
                 row = cur.fetchone()
                 if row!=None:
                     messagebox.showerror("Error", "User already Exist, Please try another", parent=self.window)
                 else:
-                    cur.execute("insert into register values(%s,%s,%s,%s)", (self.entry.get(), self.entry3.get(), self.entry2.get(), self.entry4.get()))
+                    cur.execute("insert into details values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (self.name_entry.get(), self.last_entry3.get(), self.ID_entry2.get(), self.number_entry4.get(), self.nxt_entry5.get(), self.nxt_num_entry6.get(), self.entry.get(), self.entry3.get(), self.entry2.get(), self.entry4.get()))
                     con.commit()
                     con.close()
                     messagebox.showinfo("Success", "Register Successful", parent=self.window)
