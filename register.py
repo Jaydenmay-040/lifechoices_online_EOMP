@@ -1,7 +1,11 @@
+import rsaidnumber
 from tkinter import *
 from tkinter import messagebox
+from tkinter.ttk import Treeview
 import pymysql
-
+import tkinter as tk
+from tkinter import ttk
+import mysql.connector
 
 class Login:
     def __init__(self, window):
@@ -9,59 +13,73 @@ class Login:
         self.window.title("Life Choices Online")
         self.window.geometry("1366x700")
         self.window.resizable(False, False)
-        self.loginform()
+        self.window.bind('<Control-a>', lambda z: self.admin())
+        self.Login()
 
-    def loginform(self):
-        Frame_login = Frame(self.window, bg="white")
+
+    def Login(self):
+        Frame_login = Frame(self.window, bg="#d9d9d9")
         Frame_login.place(x=0, y=0, height=700, width=1366)
 
         self.img = PhotoImage(file="./images/life-choices-logo.png")
-        img = Label(Frame_login, image=self.img).place(x=30, y=0, width=1366, height=700)
+        img = Label(Frame_login, image=self.img).place(x=150, y=0, width=440, height=100)
 
-        # self.img2 = PhotoImage(file="./images/life-choices-logo.png")
-        # img2 = Label(Frame_login, image=self.img2).place(x=0, y=10, width=1366, height=700)
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Frame_login, image=self.img2).place(x=400, y=300, width=440, height=100)
 
-        frame_input = Frame(self.window, bg='white')
-        frame_input.place(x=320, y=130, height=450, width=350)
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Frame_login, image=self.img3).place(x=800, y=100, width=440, height=100)
 
-        label1 = Label(frame_input, text="Login Here", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Frame_login, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Frame_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Frame_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        login_frame = Frame(self.window, bg='white')
+        login_frame.place(x=320, y=130, height=450, width=350)
+
+        label1 = Label(login_frame, text="Login Here", font=('Arial', 32, 'bold'), fg='black', bg='white')
         label1.place(x=75, y=20)
 
-        label2 = Label(frame_input, text='Username', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label2 = Label(login_frame, text='Username', font=('Arial', 20, 'bold'), fg='black', bg='white')
         label2.place(x=30, y=95)
-        self.user_name = Entry(frame_input, font=("time new roman", 15, 'bold'), bg='lightgray')
+        self.user_name = Entry(login_frame, font=("time new roman", 15, 'bold'), bg='lightgray')
         self.user_name.place(x=30, y=145, width=270, height=35)
 
-        label3 = Label(frame_input, text="Password", font=("Arial", 20, 'bold'), fg="black", bg='white')
+        label3 = Label(login_frame, text="Password", font=("Arial", 20, 'bold'), fg="black", bg='white')
         label3.place(x=30, y=195)
-        self.password = Entry(frame_input, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
+        self.password = Entry(login_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
         self.password.place(x=30, y=245, width=270, height=35)
 
-        btn1 = Button(frame_input, text="forgot password?", cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
+        btn1 = Button(login_frame, text="forgot password?", command=self.admin, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
         btn1.place(x=125, y=305)
 
-        btn2 = Button(frame_input, text="Login", command=self.login, cursor="hand2", font=("Arial", 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
+        btn2 = Button(login_frame, text="Login", command=self.login, cursor="hand2", font=("Arial", 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
         btn2.place(x=90, y=340)
 
-        btn3 = Button(frame_input, command=self.Register, text="Not Registered?register", cursor="hand2", font=('Arial', 10), bg='white', fg='black', bd=0)
+        btn3 = Button(login_frame, command=self.Register, text="Not Registered?register", cursor="hand2", font=('Arial', 10), bg='white', fg='black', bd=0)
         btn3.place(x=1, y=390)
 
     def login(self):
         if self.user_name.get() == "" or self.password.get() == "":
             messagebox.showerror("Error", "Ensure that all field filled in", parent=self.window)
         else:
-            try:
-                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_Online')
+            # try:
+                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
                 cur = con.cursor()
-                cur.execute('select * from register where username=%s and password=%s', (self.user_name.get(), self.password.get()))
+                cur.execute('select * from Login where username=%s and password=%s', (self.user_name.get(), self.password.get()))
                 row = cur.fetchone()
                 if row == None:
                     messagebox.showerror("Error", "Invalid Username And Password", parent=self.window)
                 else:
                     self.appscreen()
                     con.close()
-            except Exception as es:
-                messagebox.showerror('Error', 'Error Due to : {str(es)}', parent=self.window)
+            # except Exception as es:
+            #     messagebox.showerror('Error', 'Error Something Went Wrong', parent=self.window)
 
     def Register(self):
 
@@ -71,46 +89,46 @@ class Login:
         self.img = PhotoImage(file="./images/life-choices-logo.png")
         img = Label(Frame_login, image=self.img).place(x=0, y=0, width=1366, height=700)
 
-        frame_input2 = Frame(self.window, bg='white')
-        frame_input2.place(x=320, y=100, height=520, width=630)
+        register_frame = Frame(self.window, bg='white')
+        register_frame.place(x=320, y=100, height=520, width=630)
 
-        label1 = Label(frame_input2, text="Register Here", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label1 = Label(register_frame, text="Register Here", font=('Arial', 20, 'bold'), fg='black', bg='white')
         label1.place(x=45, y=20)
 
-        label2 = Label(frame_input2, text='First Name', font=('Arial', 20, "bold"), bg='white')
+        label2 = Label(register_frame, text='First Name', font=('Arial', 20, "bold"), bg='white')
         label2.place(x=30, y=95)
-        self.name_entry = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.name_entry = Entry(register_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.name_entry.place(x=30, y=145, width=270, height=35)
 
-        label3 = Label(frame_input2, text="ID Number", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label3 = Label(register_frame, text="ID Number", font=('Arial', 20, 'bold'), fg='black', bg='white')
         label3.place(x=30, y=195)
-        self.ID_entry2 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.ID_entry2 = Entry(register_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.ID_entry2.place(x=30, y=245, width=270, height=35)
 
-        label4 = Label(frame_input2, text="Last Name", font=("Arial", 20, "bold"), fg='black', bg='white')
+        label4 = Label(register_frame, text="Last Name", font=("Arial", 20, "bold"), fg='black', bg='white')
         label4.place(x=330, y=95)
-        self.last_entry3 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.last_entry3 = Entry(register_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.last_entry3.place(x=330, y=145, width=270, height=35)
 
-        label5 = Label(frame_input2, text='Phone Number', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label5 = Label(register_frame, text='Phone Number', font=('Arial', 20, 'bold'), fg='black', bg='white')
         label5.place(x=330, y=195)
-        self.number_entry4 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.number_entry4 = Entry(register_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.number_entry4.place(x=330, y=245, width=270, height=35)
 
-        nxt_label = Label(frame_input2, text="Next of Kin Details", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        nxt_label = Label(register_frame, text="Next of Kin Details", font=('Arial', 20, 'bold'), fg='black', bg='white')
         nxt_label.place(x=180, y=295)
 
-        label6 = Label(frame_input2, text="Name", font=("Arial", 20, "bold"), fg='black', bg='white')
+        label6 = Label(register_frame, text="Name", font=("Arial", 20, "bold"), fg='black', bg='white')
         label6.place(x=30, y=350)
-        self.nxt_entry5 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.nxt_entry5 = Entry(register_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.nxt_entry5.place(x=30, y=400, width=270, height=35)
 
-        label7 = Label(frame_input2, text='Next Phone Number', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label7 = Label(register_frame, text='Next Phone Number', font=('Arial', 20, 'bold'), fg='black', bg='white')
         label7.place(x=330, y=350)
-        self.nxt_num_entry6 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.nxt_num_entry6 = Entry(register_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.nxt_num_entry6.place(x=330, y=400, width=270, height=35)
 
-        btn = Button(frame_input2, command=self.nxtRegister, text="Next", cursor="hand2", font=('Arial', 15),
+        btn = Button(register_frame, command=self.nxtRegister, text="Next", cursor="hand2", font=('Arial', 15),
                       fg='black', bg='#8dc63f', bd=0, width=15, height=1)
         btn.place(x=90, y=470)
 
@@ -139,8 +157,8 @@ class Login:
 
         label4 = Label(frame_input2, text="Email", font=("Arial", 20, "bold"), fg='black', bg='white')
         label4.place(x=330, y=95)
-        self.entry3 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
-        self.entry3.place(x=330, y=145, width=270, height=35)
+        self.email_entry3 = Entry(frame_input2, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.email_entry3.place(x=330, y=145, width=270, height=35)
 
         label5 = Label(frame_input2, text='Confirm Password', font=('Arial', 20, 'bold'), fg='black', bg='white')
         label5.place(x=330, y=195)
@@ -150,29 +168,35 @@ class Login:
         btn2 = Button(frame_input2, command=self.register, text="Register", cursor="hand2", font=('Arial', 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
         btn2.place(x=90, y=340)
 
-        btn3 = Button(frame_input2, command=self.loginform, text="Already Registered?Login", cursor="hand2", font=('Arial', 10), bg='white', fg='black', bd=0)
+        btn3 = Button(frame_input2, command=self.Login, text="Already Registered?Login", cursor="hand2", font=('Arial', 10), bg='white', fg='black', bd=0)
         btn3.place(x=110, y=390)
 
+        btn4 = Button(frame_input2, command=self.back, text="back", cursor="hand2", font=('Arial', 15),
+                      fg='black', bg='#8dc63f', bd=0, width=13, height=1)
+        btn4.place(x=350, y=340)
+
     def register(self):
-        if self.entry.get() == "" or self.entry2.get() == "" or self.entry3.get() == "" or self.entry4.get() == "" or self.name_entry == "" or self.ID_entry2 == "" or self.last_entry3 == "" or self.number_entry4 == "":
+        if self.entry.get() == "" or self.entry2.get() == "" or self.email_entry3.get() == "" or self.entry4.get() == "" or self.name_entry.get() == "" or self.ID_entry2.get() == "" or self.last_entry3.get() == "" or self.number_entry4.get() == "" or self.nxt_entry5.get() == "" or self.nxt_num_entry6.get() == "":
             messagebox.showerror("Error", "All Fields Are Required", parent=self.window)
         elif self.entry2.get()!=self.entry4.get():
             messagebox.showerror("Error", "Password and Confirm Password Should Be The Same", parent=self.window)
         else:
-            try:
-                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='Lifechoices_Online')
+            # try:
+                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
                 cur = con.cursor()
-                cur.execute("select * from details where email=%s", self.entry3.get())
-                row = cur.fetchone()
-                if row!=None:
-                    messagebox.showerror("Error", "User already Exist, Please try another", parent=self.window)
-                else:
-                    cur.execute("insert into details values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (self.name_entry.get(), self.last_entry3.get(), self.ID_entry2.get(), self.number_entry4.get(), self.nxt_entry5.get(), self.nxt_num_entry6.get(), self.entry.get(), self.entry3.get(), self.entry2.get(), self.entry4.get()))
-                    con.commit()
-                    con.close()
-                    messagebox.showinfo("Success", "Register Successful", parent=self.window)
-            except Exception as es:
-                messagebox.showerror("Error", "Error due to:{str(es)}", parent=self.window)
+                cur.execute("insert into registration(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber) values(%s, %s, %s, %s, %s, %s)", ( self.name_entry.get(), self.last_entry3.get(), self.ID_entry2.get(), self.number_entry4.get(), self.nxt_entry5.get(), self.nxt_num_entry6.get()))
+                con.commit()
+                cur1 = con.cursor()
+                cur1.execute("insert into Login(username, email, password, confirmpassord) values(%s, %s, %s, %s)", (self.entry.get(), self.email_entry3.get(), self.entry2.get(), self.entry4.get()))
+                con.commit()
+                messagebox.showinfo("Success", "Register Successful", parent=self.window)
+                self.Login()
+                con.close()
+            # except Exception as es:
+            #     messagebox.showerror("Error", "Error Something Went Wrong", parent=self.window)
+
+    def back(self):
+        self.Register()
 
     def appscreen(self):
 
@@ -182,8 +206,190 @@ class Login:
         label1.place(x=375, y=100)
         label2 = Label(Frame_login, text="")
         label2.place(x=235, y=160)
-        btn2 = Button(Frame_login, text="LOGOUT", command=self.loginform, cursor="hand2", font=('times new romain', 15), fg='black', bg='white', bd=0, width=15, height=1)
+        btn2 = Button(Frame_login, text="LOGOUT", command=self.Login, cursor="hand2", font=('times new romain', 15), fg='black', bg='white', bd=0, width=15, height=1)
         btn2.place(x=1000, y=10)
+
+    def admin(self):
+        Frame_admin = Frame(self.window, bg='#d9d9d9')
+        Frame_admin.place(x=0, y=0, height=700, width=1366)
+
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Frame_admin, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Frame_admin, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Frame_admin, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Frame_admin, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Frame_admin, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Frame_admin, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        admin_frame = Frame(self.window, bg='white')
+        admin_frame.place(x=180, y=50, height=600, width=1000)
+
+        def update(row):
+            trv.delete(*trv.get_children())
+            for i in row:
+                trv.insert("", 'end', values=i)
+
+        def search():
+            q2 = q.get()
+            cur.execute("select * from registration where name like '%" + q2 + "%' or surname like '%" + q2 + "%'")
+            row = cur.fetchall()
+            update(row)
+
+        def clear():
+            cur.execute("select * from registration")
+            row = cur.fetchall()
+            update(row)
+
+        def getrow(event):
+            rowid = trv.identify_row(event.y)
+            item = trv.item(trv.focus())
+            t1.set(item['values'][0])
+            t2.set(item['values'][1])
+            t3.set(item['values'][2])
+            t4.set(item['values'][3])
+            t5.set(item['values'][4])
+            t6.set(item['values'][5])
+
+        def update_details():
+            name = t1.get()
+            surname = t2.get()
+            ID = t3.get()
+            phone = t4.get()
+            nxtName = t5.get()
+            nxtNumber = t6.get()
+            if messagebox.askyesno("confirm Please?", "Are you sure you want to update?"):
+                cur = con.cursor()
+                query = "UPDATE registartion SET name=%, surname=%, IDnumber=%, phoneNumber=%, nxtOfName=%, nxtOfNumber=% WHERE id=%;"
+                cur.execute(query, (name, surname, ID, phone, nxtName, nxtNumber))
+                con.commit()
+                con.close()
+                clear()
+            else:
+                return True
+
+        def add_new():
+            name = t1.get()
+            surname = t2.get()
+            ID = t3.get()
+            phone = t4.get()
+            nxtName = t5.get()
+            nxtNumber = t6.get()
+            cur = con.cursor()
+            query = "insert into registration value(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber, date) VALUE(%s, %s, %s, %s, %s, %s, NOW())"
+            cur.execute(query, (name, surname, ID, phone, nxtName, nxtNumber))
+            con.commit()
+            con.close()
+            clear()
+
+        def delete_details():
+            name = t1.get()
+            if messagebox.askyesno("confirm Delete?", "Are you sure you want to delete this customer?"):
+                cur = con.cursor()
+                query = "DELETE FROM registration WHERE name= " + name
+                cur.execute(query)
+                con.commit()
+                con.close()
+                clear()
+            else:
+                return True
+
+        con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
+                              database='LifeChoices_Online')
+        cur = con.cursor()
+
+        q = StringVar()
+        t1 = StringVar()
+        t2 = StringVar()
+        t3 = StringVar()
+        t4 = StringVar()
+        t5 = StringVar()
+        t6 = StringVar()
+
+        # Creates The Frames For Details, Search and Data
+        wrapper1 = LabelFrame(admin_frame, text="Details")
+        wrapper2 = LabelFrame(admin_frame, text="Search")
+        wrapper3 = LabelFrame(admin_frame, text="Data")
+
+        wrapper1.pack(fill="both", expand="yes", padx=20, pady=20)
+        wrapper2.pack(fill="both", expand="yes", padx=20, pady=20)
+        wrapper3.pack(fill="both", expand="yes", padx=20, pady=20)
+
+        # Displays The Headings In Details
+        trv = ttk.Treeview(wrapper1, column=(1, 2, 3, 4, 5, 6), show="headings", height="6")
+        trv.pack()
+
+        trv.heading(1, text="Name")
+        trv.heading(2, text="Surname")
+        trv.heading(3, text="ID Number")
+        trv.heading(4, text="Phone Number")
+        trv.heading(5, text="Next Of Kin Name")
+        trv.heading(6, text="Next Of Kin Number")
+
+        trv.bind('<Double 1>', getrow)
+
+        cur.execute("select * from registration")
+        row = cur.fetchall()
+        update(row)
+
+        # Search Labels and Entries
+        lbl = Label(wrapper2, text="Seacrh")
+        lbl.pack(side=tk.LEFT, padx=10)
+        ent = Entry(wrapper2, textvariable=q)
+        ent.pack(side=tk.LEFT, padx=6)
+        btn = Button(wrapper2, text="Search", command=search)
+        btn.pack(side=tk.LEFT, padx=6)
+        clear_btn = Button(wrapper2, text="Clear", command=clear)
+        clear_btn.pack(side=tk.LEFT, padx=6)
+
+        # User Data Labels and Entries
+        lbl1 = Label(wrapper3, text="Name")
+        lbl1.grid(row=0, column=0, padx=5, pady=3)
+        ent1 = Entry(wrapper3, textvariable=t1)
+        ent1.grid(row=0, column=1, padx=5, pady=3)
+
+        lbl2 = Label(wrapper3, text="Surname")
+        lbl2.grid(row=1, column=0, padx=5, pady=3)
+        ent2 = Entry(wrapper3, textvariable=t2)
+        ent2.grid(row=1, column=1, padx=5, pady=3)
+
+        lbl3 = Label(wrapper3, text="ID Number")
+        lbl3.grid(row=2, column=0, padx=5, pady=3)
+        ent3 = Entry(wrapper3, textvariable=t3)
+        ent3.grid(row=2, column=1, padx=5, pady=3)
+
+        lbl4 = Label(wrapper3, text="Phone Number")
+        lbl4.grid(row=3, column=0, padx=5, pady=3)
+        ent4 = Entry(wrapper3, textvariable=t4)
+        ent4.grid(row=3, column=1, padx=5, pady=3)
+
+        lbl5 = Label(wrapper3, text="Next of Kin Name")
+        lbl5.grid(row=4, column=0, padx=5, pady=3)
+        ent5 = Entry(wrapper3, textvariable=t5)
+        ent5.grid(row=4, column=1, padx=5, pady=3)
+
+        lbl6 = Label(wrapper3, text="Next of Kin ")
+        lbl6.grid(row=5, column=0, padx=5, pady=3)
+        ent6 = Entry(wrapper3, textvariable=t6)
+        ent6.grid(row=5, column=1, padx=5, pady=3)
+
+        update_btn = Button(wrapper3, text="Update", command=update_details)
+        add_btn = Button(wrapper3, text="Add New", command=add_new)
+        delete_btn = Button(wrapper3, text="Delete", command=delete_details)
+
+        add_btn.grid(row=6, column=0, padx=5, pady=3)
+        update_btn.grid(row=6, column=1, padx=5, pady=3)
+        delete_btn.grid(row=6, column=2, padx=5, pady=3)
+
 
 window = Tk()
 ob = Login(window)
