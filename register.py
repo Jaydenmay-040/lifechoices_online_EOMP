@@ -5,7 +5,10 @@ from tkinter.ttk import Treeview
 import pymysql
 import tkinter as tk
 from tkinter import ttk
-import mysql.connector
+import random
+from validate_email import validate_email
+import smtplib
+
 
 class Login:
     def __init__(self, window):
@@ -15,7 +18,6 @@ class Login:
         self.window.resizable(False, False)
         self.window.bind('<Control-a>', lambda z: self.admin())
         self.Login()
-
 
     def Login(self):
         Frame_login = Frame(self.window, bg="#d9d9d9")
@@ -55,7 +57,7 @@ class Login:
         self.password = Entry(login_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
         self.password.place(x=30, y=245, width=270, height=35)
 
-        btn1 = Button(login_frame, text="forgot password?", command=self.admin, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
+        btn1 = Button(login_frame, text="forgot password?", command=self.registration, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
         btn1.place(x=125, y=305)
 
         btn2 = Button(login_frame, text="Login", command=self.login, cursor="hand2", font=("Arial", 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
@@ -68,7 +70,7 @@ class Login:
         if self.user_name.get() == "" or self.password.get() == "":
             messagebox.showerror("Error", "Ensure that all field filled in", parent=self.window)
         else:
-            # try:
+            try:
                 con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
                 cur = con.cursor()
                 cur.execute('select * from Login where username=%s and password=%s', (self.user_name.get(), self.password.get()))
@@ -78,8 +80,103 @@ class Login:
                 else:
                     self.appscreen()
                     con.close()
-            # except Exception as es:
-            #     messagebox.showerror('Error', 'Error Something Went Wrong', parent=self.window)
+            except Exception as es:
+                messagebox.showerror('Error', 'Error Something Went Wrong', parent=self.window)
+
+    def registration(self):
+        Registration_login = Frame(self.window, bg="#d9d9d9")
+        Registration_login.place(x=0, y=0, height=700, width=1366)
+
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Registration_login, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Registration_login, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Registration_login, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Registration_login, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Registration_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Registration_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        registration_frame = Frame(self.window, bg='white')
+        registration_frame.place(x=320, y=130, height=450, width=400)
+
+        label1 = Label(registration_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        label1.place(x=35, y=20)
+
+        label2 = Label(registration_frame, text='Enter your four-digit-code', font=('Arial', 20, 'bold'), fg='black',
+                       bg='white')
+        label2.place(x=30, y=100)
+        self.first_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.first_entry.place(x=30, y=150, width=40)
+        self.second_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.second_entry.place(x=90, y=150, width=40)
+        self.third_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.third_entry.place(x=150, y=150, width=40)
+        self.fourth_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.fourth_entry.place(x=210, y=150, width=40)
+        self.fifth_lbl = Entry(registration_frame, state='readonly')
+        self.sixth_lbl = Entry(registration_frame, state='readonly')
+        self.seventh_lbl = Entry(registration_frame, state='readonly')
+        self.eighth_lbl = Entry(registration_frame, state='readonly')
+        btn2 = Button(registration_frame, text="Confirm", command=self.notRegistered, cursor="hand2",
+                      font=("Arial", 15), fg='black',
+                      bg='#8dc63f', bd=0, width=15, height=1)
+        btn2.place(x=90, y=340)
+        btn3 = Button(registration_frame, command=self.Login, text="Already Registered?login", cursor="hand2",
+                      font=('Arial', 10), bg='white', fg='black', bd=0)
+        btn3.place(x=1, y=390)
+
+    def notRegistered(self):
+        user_code = []
+        while len(user_code) < 4:
+            code = random.randint(1, 20)
+            with open("User_Code.txt", 'a') as file:
+                file.write('Code: ' + str(code) + '\n')
+            for x in range(int(code)):
+                print(x)
+            if code not in user_code:
+                user_code.append(code)
+            self.fifth_lbl.config(state='normal')
+            self.sixth_lbl.config(state='normal')
+            self.seventh_lbl.config(state='normal')
+            self.eighth_lbl.config(state='normal')
+            self.fifth_lbl.delete(0, END)
+            self.sixth_lbl.delete(0, END)
+            self.seventh_lbl.delete(0, END)
+            self.eighth_lbl.delete(0, END)
+            self.fifth_lbl.config(state='normal')
+            self.fifth_lbl.insert(0, user_code[0])
+            self.sixth_lbl.config(state='normal')
+            self.sixth_lbl.insert(0, user_code[0])
+            self.seventh_lbl.config(state='normal')
+            self.seventh_lbl.insert(0, user_code[0])
+            self.eighth_lbl.config(state='normal')
+            self.eighth_lbl.insert(0, user_code[0])
+
+        if self.first_entry.get() == "" or self.second_entry.get() == "" or self.third_entry == "" or self.fourth_entry == "":
+            messagebox.showerror("Error", "Ensure that all fields are filled in")
+        else:
+            user_code = set(user_code)
+            user_list = [int(self.first_entry.get()), int(self.second_entry.get()), int(self.third_entry.get()),
+                         int(self.fourth_entry.get())]
+            matching_numbers = user_code.intersection(user_list)
+            winnings = len(matching_numbers)
+            if user_list == 0:
+                messagebox.showerror("Error", "Ensure that all fields are filled in")
+
+            if winnings == 0 or winnings == 1 or winnings == 2 or winnings == 3:
+                messagebox.showerror("Error", "Ensure that all number are filled in correctly")
+
+            if winnings == 4:
+                self.Register()
 
     def Register(self):
 
@@ -194,7 +291,6 @@ class Login:
                 con.close()
             # except Exception as es:
             #     messagebox.showerror("Error", "Error Something Went Wrong", parent=self.window)
-
     def back(self):
         self.Register()
 
@@ -241,12 +337,12 @@ class Login:
 
         def search():
             q2 = q.get()
-            cur.execute("select * from registration where name like '%" + q2 + "%' or surname like '%" + q2 + "%'")
+            cur.execute("select id, name, surname from registration where name like '%"+q2+"%' or surname like '%"+q2 +"%'")
             row = cur.fetchall()
             update(row)
 
         def clear():
-            cur.execute("select * from registration")
+            cur.execute("select id, name, surname from registration")
             row = cur.fetchall()
             update(row)
 
@@ -259,50 +355,48 @@ class Login:
             t4.set(item['values'][3])
             t5.set(item['values'][4])
             t6.set(item['values'][5])
+            t7.set(item['values'][6])
 
         def update_details():
-            name = t1.get()
-            surname = t2.get()
-            ID = t3.get()
-            phone = t4.get()
-            nxtName = t5.get()
-            nxtNumber = t6.get()
+            name = t2.get()
+            surname = t3.get()
+            ID = t4.get()
+            phone = t5.get()
+            nxtName = t6.get()
+            nxtNumber = t7.get()
             if messagebox.askyesno("confirm Please?", "Are you sure you want to update?"):
                 cur = con.cursor()
-                query = "UPDATE registartion SET name=%, surname=%, IDnumber=%, phoneNumber=%, nxtOfName=%, nxtOfNumber=% WHERE id=%;"
+                query = "UPDATE registration SET name=%, surname=%, IDnumber=%, phoneNumber=%, nxtOfName=%, nxtOfNumber=% WHERE id=%;"
                 cur.execute(query, (name, surname, ID, phone, nxtName, nxtNumber))
                 con.commit()
                 con.close()
                 clear()
             else:
                 return True
-
         def add_new():
-            name = t1.get()
-            surname = t2.get()
-            ID = t3.get()
-            phone = t4.get()
-            nxtName = t5.get()
-            nxtNumber = t6.get()
+            name = t2.get()
+            surname = t3.get()
+            ID = t4.get()
+            phone = t5.get()
+            nxtName = t6.get()
+            nxtNumber = t7.get()
+            con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
             cur = con.cursor()
-            query = "insert into registration value(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber, date) VALUE(%s, %s, %s, %s, %s, %s, NOW())"
-            cur.execute(query, (name, surname, ID, phone, nxtName, nxtNumber))
+            cur.execute("insert into registration(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber) values(%s, %s, %s, %s, %s, %s)", (name.get(), surname.get(), ID.get(), phone.get(), nxtName.get(), nxtNumber.get()))
             con.commit()
             con.close()
-            clear()
 
         def delete_details():
-            name = t1.get()
+            User_id = t1.get()
             if messagebox.askyesno("confirm Delete?", "Are you sure you want to delete this customer?"):
                 cur = con.cursor()
-                query = "DELETE FROM registration WHERE name= " + name
-                cur.execute(query)
+                query = "DELETE FROM registration WHERE id= "+User_id
+                cur.execute(query, (User_id))
                 con.commit()
                 con.close()
                 clear()
             else:
                 return True
-
         con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
                               database='LifeChoices_Online')
         cur = con.cursor()
@@ -314,6 +408,7 @@ class Login:
         t4 = StringVar()
         t5 = StringVar()
         t6 = StringVar()
+        t7 = StringVar()
 
         # Creates The Frames For Details, Search and Data
         wrapper1 = LabelFrame(admin_frame, text="Details")
@@ -325,15 +420,16 @@ class Login:
         wrapper3.pack(fill="both", expand="yes", padx=20, pady=20)
 
         # Displays The Headings In Details
-        trv = ttk.Treeview(wrapper1, column=(1, 2, 3, 4, 5, 6), show="headings", height="6")
+        trv = ttk.Treeview(wrapper1, column=(1, 2, 3, 4, 5, 6, 7), show="headings", height="6")
         trv.pack()
 
-        trv.heading(1, text="Name")
-        trv.heading(2, text="Surname")
-        trv.heading(3, text="ID Number")
-        trv.heading(4, text="Phone Number")
-        trv.heading(5, text="Next Of Kin Name")
-        trv.heading(6, text="Next Of Kin Number")
+        trv.heading(1, text="User_id")
+        trv.heading(2, text="Name")
+        trv.heading(3, text="Surname")
+        trv.heading(4, text="ID Number")
+        trv.heading(5, text="Phone Number")
+        trv.heading(6, text="Next Of Kin Name")
+        trv.heading(7, text="Next Of Kin Number")
 
         trv.bind('<Double 1>', getrow)
 
@@ -352,43 +448,48 @@ class Login:
         clear_btn.pack(side=tk.LEFT, padx=6)
 
         # User Data Labels and Entries
-        lbl1 = Label(wrapper3, text="Name")
+        lbl1 = Label(wrapper3, text="User_id")
         lbl1.grid(row=0, column=0, padx=5, pady=3)
         ent1 = Entry(wrapper3, textvariable=t1)
         ent1.grid(row=0, column=1, padx=5, pady=3)
 
-        lbl2 = Label(wrapper3, text="Surname")
+        lbl2 = Label(wrapper3, text="Name")
         lbl2.grid(row=1, column=0, padx=5, pady=3)
         ent2 = Entry(wrapper3, textvariable=t2)
         ent2.grid(row=1, column=1, padx=5, pady=3)
 
-        lbl3 = Label(wrapper3, text="ID Number")
+        lbl3 = Label(wrapper3, text="Surname")
         lbl3.grid(row=2, column=0, padx=5, pady=3)
         ent3 = Entry(wrapper3, textvariable=t3)
         ent3.grid(row=2, column=1, padx=5, pady=3)
 
-        lbl4 = Label(wrapper3, text="Phone Number")
+        lbl4 = Label(wrapper3, text="ID Number")
         lbl4.grid(row=3, column=0, padx=5, pady=3)
         ent4 = Entry(wrapper3, textvariable=t4)
         ent4.grid(row=3, column=1, padx=5, pady=3)
 
-        lbl5 = Label(wrapper3, text="Next of Kin Name")
+        lbl5 = Label(wrapper3, text="Phone Number")
         lbl5.grid(row=4, column=0, padx=5, pady=3)
         ent5 = Entry(wrapper3, textvariable=t5)
         ent5.grid(row=4, column=1, padx=5, pady=3)
 
-        lbl6 = Label(wrapper3, text="Next of Kin ")
+        lbl6 = Label(wrapper3, text="Next of Kin Name")
         lbl6.grid(row=5, column=0, padx=5, pady=3)
         ent6 = Entry(wrapper3, textvariable=t6)
         ent6.grid(row=5, column=1, padx=5, pady=3)
+
+        lbl7 = Label(wrapper3, text="Next of Kin ")
+        lbl7.grid(row=6, column=0, padx=5, pady=3)
+        ent7 = Entry(wrapper3, textvariable=t7)
+        ent7.grid(row=6, column=1, padx=5, pady=3)
 
         update_btn = Button(wrapper3, text="Update", command=update_details)
         add_btn = Button(wrapper3, text="Add New", command=add_new)
         delete_btn = Button(wrapper3, text="Delete", command=delete_details)
 
-        add_btn.grid(row=6, column=0, padx=5, pady=3)
-        update_btn.grid(row=6, column=1, padx=5, pady=3)
-        delete_btn.grid(row=6, column=2, padx=5, pady=3)
+        add_btn.grid(row=7, column=0, padx=5, pady=3)
+        update_btn.grid(row=7, column=1, padx=5, pady=3)
+        delete_btn.grid(row=7, column=2, padx=5, pady=3)
 
 
 window = Tk()
