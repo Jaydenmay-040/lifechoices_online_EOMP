@@ -16,7 +16,7 @@ class Login:
         self.window.title("Life Choices Online")
         self.window.geometry("1366x700")
         self.window.resizable(False, False)
-        self.window.bind('<Control-a>', lambda z: self.admin())
+        self.window.bind('<Control-a>', lambda z: self.Admin())
         self.Login()
 
     def Login(self):
@@ -57,7 +57,7 @@ class Login:
         self.password = Entry(login_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
         self.password.place(x=30, y=245, width=270, height=35)
 
-        btn1 = Button(login_frame, text="forgot password?", command=self.registration, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
+        btn1 = Button(login_frame, text="forgot password?", command="", cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
         btn1.place(x=125, y=305)
 
         btn2 = Button(login_frame, text="Login", command=self.login, cursor="hand2", font=("Arial", 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
@@ -83,100 +83,96 @@ class Login:
             except Exception as es:
                 messagebox.showerror('Error', 'Error Something Went Wrong', parent=self.window)
 
-    def registration(self):
-        Registration_login = Frame(self.window, bg="#d9d9d9")
-        Registration_login.place(x=0, y=0, height=700, width=1366)
+    # def registration(self):
+    #     Registration_login = Frame(self.window, bg="#d9d9d9")
+    #     Registration_login.place(x=0, y=0, height=700, width=1366)
+    #
+    #     self.img = PhotoImage(file="./images/life-choices-logo.png")
+    #     img = Label(Registration_login, image=self.img).place(x=150, y=0, width=440, height=100)
+    #
+    #     self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+    #     img2 = Label(Registration_login, image=self.img2).place(x=400, y=300, width=440, height=100)
+    #
+    #     self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+    #     img3 = Label(Registration_login, image=self.img3).place(x=800, y=100, width=440, height=100)
+    #
+    #     self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+    #     img4 = Label(Registration_login, image=self.img4).place(x=650, y=550, width=440, height=100)
+    #
+    #     self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+    #     img5 = Label(Registration_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
+    #
+    #     self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+    #     img6 = Label(Registration_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
+    #
+    #     registration_frame = Frame(self.window, bg='white')
+    #     registration_frame.place(x=320, y=130, height=450, width=400)
+    #
+    #     label1 = Label(registration_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
+    #     label1.place(x=35, y=20)
+    #
+    #     label2 = Label(registration_frame, text='Enter your four-digit-code', font=('Arial', 20, 'bold'), fg='black',
+    #                    bg='white')
+    #     label2.place(x=30, y=100)
+    #     self.first_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+    #     self.first_entry.place(x=30, y=150, width=40)
+    #     self.second_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+    #     self.second_entry.place(x=90, y=150, width=40)
+    #     self.third_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+    #     self.third_entry.place(x=150, y=150, width=40)
+    #     self.fourth_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+    #     self.fourth_entry.place(x=210, y=150, width=40)
+    #     self.fifth_lbl = Entry(registration_frame, state='readonly')
+    #     self.sixth_lbl = Entry(registration_frame, state='readonly')
+    #     self.seventh_lbl = Entry(registration_frame, state='readonly')
+    #     self.eighth_lbl = Entry(registration_frame, state='readonly')
+    #     btn2 = Button(registration_frame, text="Confirm", command="", cursor="hand2",
+    #                   font=("Arial", 15), fg='black',
+    #                   bg='#8dc63f', bd=0, width=15, height=1)
+    #     btn2.place(x=90, y=340)
+    #     btn3 = Button(registration_frame, command=self.Login, text="Already Registered?login", cursor="hand2",
+    #                   font=('Arial', 10), bg='white', fg='black', bd=0)
+    #     btn3.place(x=1, y=390)
 
-        self.img = PhotoImage(file="./images/life-choices-logo.png")
-        img = Label(Registration_login, image=self.img).place(x=150, y=0, width=440, height=100)
-
-        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
-        img2 = Label(Registration_login, image=self.img2).place(x=400, y=300, width=440, height=100)
-
-        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
-        img3 = Label(Registration_login, image=self.img3).place(x=800, y=100, width=440, height=100)
-
-        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
-        img4 = Label(Registration_login, image=self.img4).place(x=650, y=550, width=440, height=100)
-
-        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
-        img5 = Label(Registration_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
-
-        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
-        img6 = Label(Registration_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
-
-        registration_frame = Frame(self.window, bg='white')
-        registration_frame.place(x=320, y=130, height=450, width=400)
-
-        label1 = Label(registration_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
-        label1.place(x=35, y=20)
-
-        label2 = Label(registration_frame, text='Enter your four-digit-code', font=('Arial', 20, 'bold'), fg='black',
-                       bg='white')
-        label2.place(x=30, y=100)
-        self.first_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-        self.first_entry.place(x=30, y=150, width=40)
-        self.second_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-        self.second_entry.place(x=90, y=150, width=40)
-        self.third_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-        self.third_entry.place(x=150, y=150, width=40)
-        self.fourth_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-        self.fourth_entry.place(x=210, y=150, width=40)
-        self.fifth_lbl = Entry(registration_frame, state='readonly')
-        self.sixth_lbl = Entry(registration_frame, state='readonly')
-        self.seventh_lbl = Entry(registration_frame, state='readonly')
-        self.eighth_lbl = Entry(registration_frame, state='readonly')
-        btn2 = Button(registration_frame, text="Confirm", command=self.notRegistered, cursor="hand2",
-                      font=("Arial", 15), fg='black',
-                      bg='#8dc63f', bd=0, width=15, height=1)
-        btn2.place(x=90, y=340)
-        btn3 = Button(registration_frame, command=self.Login, text="Already Registered?login", cursor="hand2",
-                      font=('Arial', 10), bg='white', fg='black', bd=0)
-        btn3.place(x=1, y=390)
-
-    def notRegistered(self):
-        user_code = []
-        while len(user_code) < 4:
-            code = random.randint(1, 20)
-            with open("User_Code.txt", 'a') as file:
-                file.write('Code: ' + str(code) + '\n')
-            for x in range(int(code)):
-                print(x)
-            if code not in user_code:
-                user_code.append(code)
-            self.fifth_lbl.config(state='normal')
-            self.sixth_lbl.config(state='normal')
-            self.seventh_lbl.config(state='normal')
-            self.eighth_lbl.config(state='normal')
-            self.fifth_lbl.delete(0, END)
-            self.sixth_lbl.delete(0, END)
-            self.seventh_lbl.delete(0, END)
-            self.eighth_lbl.delete(0, END)
-            self.fifth_lbl.config(state='normal')
-            self.fifth_lbl.insert(0, user_code[0])
-            self.sixth_lbl.config(state='normal')
-            self.sixth_lbl.insert(0, user_code[0])
-            self.seventh_lbl.config(state='normal')
-            self.seventh_lbl.insert(0, user_code[0])
-            self.eighth_lbl.config(state='normal')
-            self.eighth_lbl.insert(0, user_code[0])
-
-        if self.first_entry.get() == "" or self.second_entry.get() == "" or self.third_entry == "" or self.fourth_entry == "":
-            messagebox.showerror("Error", "Ensure that all fields are filled in")
-        else:
-            user_code = set(user_code)
-            user_list = [int(self.first_entry.get()), int(self.second_entry.get()), int(self.third_entry.get()),
-                         int(self.fourth_entry.get())]
-            matching_numbers = user_code.intersection(user_list)
-            winnings = len(matching_numbers)
-            if user_list == 0:
-                messagebox.showerror("Error", "Ensure that all fields are filled in")
-
-            if winnings == 0 or winnings == 1 or winnings == 2 or winnings == 3:
-                messagebox.showerror("Error", "Ensure that all number are filled in correctly")
-
-            if winnings == 4:
-                self.Register()
+    # def notRegistered(self):
+    #     user_code = []
+    #     while len(user_code) < 4:
+    #         code = random.randint(1, 20)
+    #         with open("User_Code.txt", 'a') as file:
+    #             file.write('Code: ' + str(code) + '\n')
+    #         for x in range(int(code)):
+    #             print(x)
+    #         if code not in user_code:
+    #             user_code.append(code)
+    #         self.fifth_lbl.config(state='normal')
+    #         self.sixth_lbl.config(state='normal')
+    #         self.seventh_lbl.config(state='normal')
+    #         self.eighth_lbl.config(state='normal')
+    #         self.fifth_lbl.delete(0, END)
+    #         self.sixth_lbl.delete(0, END)
+    #         self.seventh_lbl.delete(0, END)
+    #         self.eighth_lbl.delete(0, END)
+    #         self.fifth_lbl.insert(0, user_code[0])
+    #         self.sixth_lbl.insert(0, user_code[0])
+    #         self.seventh_lbl.insert(0, user_code[0])
+    #         self.eighth_lbl.insert(0, user_code[0])
+    #
+    #     if self.first_entry.get() == "" or self.second_entry.get() == "" or self.third_entry == "" or self.fourth_entry == "":
+    #         messagebox.showerror("Error", "Ensure that all fields are filled in")
+    #     else:
+    #         user_code = set(user_code)
+    #         user_list = [int(self.first_entry.get()), int(self.second_entry.get()), int(self.third_entry.get()),
+    #                      int(self.fourth_entry.get())]
+    #         matching_numbers = user_code.intersection(user_list)
+    #         winnings = len(matching_numbers)
+    #         if user_list == 0:
+    #             messagebox.showerror("Error", "Ensure that all fields are filled in")
+    #
+    #         if winnings == 0 or winnings == 1 or winnings == 2 or winnings == 3:
+    #             messagebox.showerror("Error", "Ensure that all number are filled in correctly")
+    #
+    #         if winnings == 4:
+    #             self.Register()
 
     def Register(self):
 
@@ -291,6 +287,7 @@ class Login:
                 con.close()
             # except Exception as es:
             #     messagebox.showerror("Error", "Error Something Went Wrong", parent=self.window)
+
     def back(self):
         self.Register()
 
@@ -304,6 +301,67 @@ class Login:
         label2.place(x=235, y=160)
         btn2 = Button(Frame_login, text="LOGOUT", command=self.Login, cursor="hand2", font=('times new romain', 15), fg='black', bg='white', bd=0, width=15, height=1)
         btn2.place(x=1000, y=10)
+
+    def Admin(self):
+        Frame_Admin = Frame(self.window, bg='#d9d9d9')
+        Frame_Admin.place(x=0, y=0, height=700, width=1366)
+
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Frame_Admin, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Frame_Admin, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Frame_Admin, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Frame_Admin, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Frame_Admin, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Frame_Admin, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        Admin_frame = Frame(self.window, bg='white')
+        Admin_frame.place(x=320, y=130, height=450, width=350)
+
+        label1 = Label(Admin_frame, text="Login Here", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        label1.place(x=75, y=20)
+
+        label2 = Label(Admin_frame, text='Username', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label2.place(x=30, y=95)
+        self.user_name = Entry(Admin_frame, font=("time new roman", 15, 'bold'), bg='lightgray')
+        self.user_name.place(x=30, y=145, width=270, height=35)
+
+        label3 = Label(Admin_frame, text="Password", font=("Arial", 20, 'bold'), fg="black", bg='white')
+        label3.place(x=30, y=195)
+        self.password = Entry(Admin_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
+        self.password.place(x=30, y=245, width=270, height=35)
+
+        btn2 = Button(Admin_frame, text="Login", command=self.admin, cursor="hand2", font=("Arial", 15), fg='black',
+                      bg='#8dc63f', bd=0, width=15, height=1)
+        btn2.place(x=90, y=340)
+
+        btn3 = Button(Admin_frame, command=self.Login, text="Not Admin?login", cursor="hand2",
+                      font=('Arial', 10), bg='white', fg='black', bd=0)
+        btn3.place(x=1, y=390)
+
+        self.userName = "Admin"
+        self.passWord = "Admin1234"
+
+    def adminLogin(self):
+        try:
+            if self.user_name.get() == self.userName and (self.password.get()) == self.passWord:
+                self.admin()
+                return messagebox.showinfo("CONGRATULATIONS", "Click Ok to continue")
+            elif (self.user_name.get()) == "" and (self.password.get()) == "":
+                return messagebox.showerror("Error", "incorrect username and password")
+            elif (self.user_name.get() != self.userName or self.password != self.passWord):
+                messagebox.showerror("Error", "Please Enter a Valid Username and Password ")
+        except IndexError:
+            messagebox.showerror("Error", "Please Enter a Valid Username and Password ")
 
     def admin(self):
         Frame_admin = Frame(self.window, bg='#d9d9d9')
@@ -373,6 +431,7 @@ class Login:
                 clear()
             else:
                 return True
+
         def add_new():
             name = t2.get()
             surname = t3.get()
@@ -397,6 +456,7 @@ class Login:
                 clear()
             else:
                 return True
+
         con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
                               database='LifeChoices_Online')
         cur = con.cursor()
