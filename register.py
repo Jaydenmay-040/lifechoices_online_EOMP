@@ -1,3 +1,5 @@
+import datetime
+
 import rsaidnumber
 from tkinter import *
 from tkinter import messagebox
@@ -6,6 +8,7 @@ import pymysql
 import tkinter as tk
 from tkinter import ttk
 import random
+import datetime as dt
 from validate_email import validate_email
 import smtplib
 
@@ -14,7 +17,7 @@ class Login:
     def __init__(self, window):
         self.window = window
         self.window.title("Life Choices Online")
-        self.window.geometry("1366x700")
+        self.window.geometry("1366x800")
         self.window.resizable(False, False)
         self.window.bind('<Control-a>', lambda z: self.Admin())
         self.Login()
@@ -57,7 +60,7 @@ class Login:
         self.password = Entry(login_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
         self.password.place(x=30, y=245, width=270, height=35)
 
-        btn1 = Button(login_frame, text="forgot password?", command="", cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
+        btn1 = Button(login_frame, text="forgot password?", command=self.registration, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
         btn1.place(x=125, y=305)
 
         btn2 = Button(login_frame, text="Login", command=self.login, cursor="hand2", font=("Arial", 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
@@ -70,7 +73,7 @@ class Login:
         if self.user_name.get() == "" or self.password.get() == "":
             messagebox.showerror("Error", "Ensure that all field filled in", parent=self.window)
         else:
-            try:
+            # try:
                 con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
                 cur = con.cursor()
                 cur.execute('select * from Login where username=%s and password=%s', (self.user_name.get(), self.password.get()))
@@ -80,99 +83,195 @@ class Login:
                 else:
                     self.appscreen()
                     con.close()
-            except Exception as es:
-                messagebox.showerror('Error', 'Error Something Went Wrong', parent=self.window)
+                    date = f"{dt.datetime.now():%a, %b %d %Y %H:%M:%S}"
+                    with open("User_Code.txt", 'a') as file:
+                        file.write('Username: ' + str(self.user_name.get()) + '\n')
+                        file.write('LogIn Date and Time: ' + date + '\n')
+            # except Exception as es:
+            #     messagebox.showerror('Error', 'Error Something Went Wrong', parent=self.window)
 
-    # def registration(self):
-    #     Registration_login = Frame(self.window, bg="#d9d9d9")
-    #     Registration_login.place(x=0, y=0, height=700, width=1366)
-    #
-    #     self.img = PhotoImage(file="./images/life-choices-logo.png")
-    #     img = Label(Registration_login, image=self.img).place(x=150, y=0, width=440, height=100)
-    #
-    #     self.img2 = PhotoImage(file="./images/life-choices-logo.png")
-    #     img2 = Label(Registration_login, image=self.img2).place(x=400, y=300, width=440, height=100)
-    #
-    #     self.img3 = PhotoImage(file="./images/life-choices-logo.png")
-    #     img3 = Label(Registration_login, image=self.img3).place(x=800, y=100, width=440, height=100)
-    #
-    #     self.img4 = PhotoImage(file="./images/life-choices-logo.png")
-    #     img4 = Label(Registration_login, image=self.img4).place(x=650, y=550, width=440, height=100)
-    #
-    #     self.img5 = PhotoImage(file="./images/life-choices-logo.png")
-    #     img5 = Label(Registration_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
-    #
-    #     self.img6 = PhotoImage(file="./images/life-choices-logo.png")
-    #     img6 = Label(Registration_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
-    #
-    #     registration_frame = Frame(self.window, bg='white')
-    #     registration_frame.place(x=320, y=130, height=450, width=400)
-    #
-    #     label1 = Label(registration_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
-    #     label1.place(x=35, y=20)
-    #
-    #     label2 = Label(registration_frame, text='Enter your four-digit-code', font=('Arial', 20, 'bold'), fg='black',
-    #                    bg='white')
-    #     label2.place(x=30, y=100)
-    #     self.first_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-    #     self.first_entry.place(x=30, y=150, width=40)
-    #     self.second_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-    #     self.second_entry.place(x=90, y=150, width=40)
-    #     self.third_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-    #     self.third_entry.place(x=150, y=150, width=40)
-    #     self.fourth_entry = Entry(registration_frame, font=('Arial', 15, 'bold'), bg='lightgray')
-    #     self.fourth_entry.place(x=210, y=150, width=40)
-    #     self.fifth_lbl = Entry(registration_frame, state='readonly')
-    #     self.sixth_lbl = Entry(registration_frame, state='readonly')
-    #     self.seventh_lbl = Entry(registration_frame, state='readonly')
-    #     self.eighth_lbl = Entry(registration_frame, state='readonly')
-    #     btn2 = Button(registration_frame, text="Confirm", command="", cursor="hand2",
-    #                   font=("Arial", 15), fg='black',
-    #                   bg='#8dc63f', bd=0, width=15, height=1)
-    #     btn2.place(x=90, y=340)
-    #     btn3 = Button(registration_frame, command=self.Login, text="Already Registered?login", cursor="hand2",
-    #                   font=('Arial', 10), bg='white', fg='black', bd=0)
-    #     btn3.place(x=1, y=390)
+    def registration(self):
+        Registration_login = Frame(self.window, bg="#d9d9d9")
+        Registration_login.place(x=0, y=0, height=700, width=1366)
 
-    # def notRegistered(self):
-    #     user_code = []
-    #     while len(user_code) < 4:
-    #         code = random.randint(1, 20)
-    #         with open("User_Code.txt", 'a') as file:
-    #             file.write('Code: ' + str(code) + '\n')
-    #         for x in range(int(code)):
-    #             print(x)
-    #         if code not in user_code:
-    #             user_code.append(code)
-    #         self.fifth_lbl.config(state='normal')
-    #         self.sixth_lbl.config(state='normal')
-    #         self.seventh_lbl.config(state='normal')
-    #         self.eighth_lbl.config(state='normal')
-    #         self.fifth_lbl.delete(0, END)
-    #         self.sixth_lbl.delete(0, END)
-    #         self.seventh_lbl.delete(0, END)
-    #         self.eighth_lbl.delete(0, END)
-    #         self.fifth_lbl.insert(0, user_code[0])
-    #         self.sixth_lbl.insert(0, user_code[0])
-    #         self.seventh_lbl.insert(0, user_code[0])
-    #         self.eighth_lbl.insert(0, user_code[0])
-    #
-    #     if self.first_entry.get() == "" or self.second_entry.get() == "" or self.third_entry == "" or self.fourth_entry == "":
-    #         messagebox.showerror("Error", "Ensure that all fields are filled in")
-    #     else:
-    #         user_code = set(user_code)
-    #         user_list = [int(self.first_entry.get()), int(self.second_entry.get()), int(self.third_entry.get()),
-    #                      int(self.fourth_entry.get())]
-    #         matching_numbers = user_code.intersection(user_list)
-    #         winnings = len(matching_numbers)
-    #         if user_list == 0:
-    #             messagebox.showerror("Error", "Ensure that all fields are filled in")
-    #
-    #         if winnings == 0 or winnings == 1 or winnings == 2 or winnings == 3:
-    #             messagebox.showerror("Error", "Ensure that all number are filled in correctly")
-    #
-    #         if winnings == 4:
-    #             self.Register()
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Registration_login, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Registration_login, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Registration_login, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Registration_login, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Registration_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Registration_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        registration_frame = Frame(self.window, bg='white')
+        registration_frame.place(x=320, y=130, height=450, width=400)
+
+        label1 = Label(registration_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        label1.place(x=35, y=20)
+
+        Username_lbl = Label(registration_frame, text='Username', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        Username_lbl.place(x=30, y=95)
+        self.Username_ent = Entry(registration_frame, font=("time new roman", 15, 'bold'), bg='lightgray')
+        self.Username_ent.place(x=30, y=145, width=270, height=35)
+
+        Email_lbl = Label(registration_frame, text="Email", font=("Arial", 20, 'bold'), fg="black", bg='white')
+        Email_lbl.place(x=30, y=195)
+        self.Email_ent = Entry(registration_frame, font=("Arial", 15, 'bold'), bg='lightgray', fg="black")
+        self.Email_ent.place(x=30, y=245, width=270, height=35)
+
+        btn2 = Button(registration_frame, text="Confirm", command=self.confirm, cursor="hand2",
+                      font=("Arial", 15), fg='black',
+                      bg='#8dc63f', bd=0, width=15, height=1)
+        btn2.place(x=90, y=340)
+        btn3 = Button(registration_frame, command=self.Login, text="Already Registered?login", cursor="hand2",
+                      font=('Arial', 10), bg='white', fg='black', bd=0)
+        btn3.place(x=1, y=390)
+
+    def confirm(self):
+        if self.Email_ent.get() == "" or self.Username_ent.get() == "":
+            messagebox.showerror("Error", "All Fields Are Required", parent=self.window)
+        con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
+        cur = con.cursor()
+        cur.execute("select * from Login where username=%s", self.Username_ent.get())
+        row = cur.fetchone()
+        if row!=None:
+            self.forgotPassword()
+            self.list = []
+            self.num = sorted(random.sample(range(1, 21), 4))
+            print(self.num)
+        else:
+            messagebox.showerror("Error", "Username doesn't Exist, Please try with another Username", parent=self.window)
+
+    def forgotPassword(self):
+        forgot_login = Frame(self.window, bg="#d9d9d9")
+        forgot_login.place(x=0, y=0, height=700, width=1366)
+
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(forgot_login, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(forgot_login, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(forgot_login, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(forgot_login, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(forgot_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(forgot_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        forgot_frame = Frame(self.window, bg='white')
+        forgot_frame.place(x=320, y=130, height=450, width=400)
+
+        label1 = Label(forgot_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        label1.place(x=35, y=20)
+
+        label2 = Label(forgot_frame, text='Enter your four-digit-code', font=('Arial', 20, 'bold'), fg='black',
+                       bg='white')
+        label2.place(x=30, y=100)
+        self.first_entry = Entry(forgot_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.first_entry.place(x=80, y=190, width=40)
+        self.second_entry = Entry(forgot_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.second_entry.place(x=140, y=190, width=40)
+        self.third_entry = Entry(forgot_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.third_entry.place(x=200, y=190, width=40)
+        self.fourth_entry = Entry(forgot_frame, font=('Arial', 15, 'bold'), bg='lightgray')
+        self.fourth_entry.place(x=260, y=190, width=40)
+
+        btn1 = Button(forgot_frame, text="Didn't receive code?", command=self.reload, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
+        btn1.place(x=125, y=305)
+        btn2 = Button(forgot_frame, text="Confirm", command=self.notRegistered, cursor="hand2",
+                      font=("Arial", 15), fg='black',
+                      bg='#8dc63f', bd=0, width=15, height=1)
+        btn2.place(x=90, y=340)
+        btn3 = Button(forgot_frame, command=self.Login, text="Already Registered?login", cursor="hand2",
+                      font=('Arial', 10), bg='white', fg='black', bd=0)
+        btn3.place(x=1, y=390)
+
+    def reload(self):
+        self.list = []
+        self.num = sorted(random.sample(range(1, 21), 4))
+        print(self.num)
+
+    def notRegistered(self):
+        self.list = [int(self.first_entry.get()), int(self.second_entry.get()), int(self.third_entry.get()), int(self.fourth_entry.get())]
+        if self.list != self.num:
+            messagebox.showerror("Error", "Ensure that your four-digit-code is entered correctly")
+        else:
+            self.update_user()
+
+    def update_user(self):
+        Update_login = Frame(self.window, bg="#d9d9d9")
+        Update_login.place(x=0, y=0, height=700, width=1366)
+
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Update_login, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Update_login, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Update_login, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Update_login, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Update_login, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Update_login, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        update_frame = Frame(self.window, bg='white')
+        update_frame.place(x=320, y=130, height=450, width=400)
+
+        label1 = Label(update_frame, text="Security Details", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        label1.place(x=35, y=20)
+
+        label2 = Label(update_frame, text='Password', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label2.place(x=30, y=95)
+        self.Password_ent = Entry(update_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
+        self.Password_ent.place(x=30, y=145, width=270, height=35)
+
+        label3 = Label(update_frame, text="Confirm Password", font=("Arial", 20, 'bold'), fg="black", bg='white')
+        label3.place(x=30, y=195)
+        self.ConfirmPass_ent = Entry(update_frame, font=("Arial", 15, 'bold'), bg='lightgray', show="*")
+        self.ConfirmPass_ent.place(x=30, y=245, width=270, height=35)
+
+        btn1 = Button(update_frame, text="Cancel?", command=self.Login, cursor='hand2', font=('calibri', 10), fg='black', bg='white', bd=0)
+        btn1.place(x=125, y=305)
+
+        btn2 = Button(update_frame, text="Confirm", command=self.Update_User, cursor="hand2", font=("Arial", 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
+        btn2.place(x=90, y=340)
+
+    def Update_User(self):
+        Pass = self.Password_ent.get()
+        confirmPass = self.ConfirmPass_ent.get()
+        Username = self.Username_ent.get()
+        if messagebox.askyesno("confirm Please?", "Are you sure you want to update?"):
+            con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
+            cur = con.cursor()
+            query = "UPDATE Login SET password=%s, confirmpassword=%s WHERE username=%s"
+            cur.execute(query, (Pass, confirmPass, Username))
+            con.commit()
+            con.close()
+            self.Login()
+        else:
+            return True
+
 
     def Register(self):
 
@@ -273,6 +372,12 @@ class Login:
             messagebox.showerror("Error", "All Fields Are Required", parent=self.window)
         elif self.entry2.get()!=self.entry4.get():
             messagebox.showerror("Error", "Password and Confirm Password Should Be The Same", parent=self.window)
+        con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
+        cur = con.cursor()
+        cur.execute("select * from Login where username=%s", self.entry.get())
+        row = cur.fetchone()
+        if row!=None:
+            messagebox.showerror("Error", "Username already Exist, Please try with another Username", parent=self.window)
         else:
             # try:
                 con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
@@ -280,7 +385,7 @@ class Login:
                 cur.execute("insert into registration(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber) values(%s, %s, %s, %s, %s, %s)", ( self.name_entry.get(), self.last_entry3.get(), self.ID_entry2.get(), self.number_entry4.get(), self.nxt_entry5.get(), self.nxt_num_entry6.get()))
                 con.commit()
                 cur1 = con.cursor()
-                cur1.execute("insert into Login(username, email, password, confirmpassord) values(%s, %s, %s, %s)", (self.entry.get(), self.email_entry3.get(), self.entry2.get(), self.entry4.get()))
+                cur1.execute("insert into Login(username, email, password, confirmpassword) values(%s, %s, %s, %s)", (self.entry.get(), self.email_entry3.get(), self.entry2.get(), self.entry4.get()))
                 con.commit()
                 messagebox.showinfo("Success", "Register Successful", parent=self.window)
                 self.Login()
@@ -292,15 +397,46 @@ class Login:
         self.Register()
 
     def appscreen(self):
+        Appscreen = Frame(self.window, bg="#d9d9d9")
+        Appscreen.place(x=0, y=0, height=700, width=1366)
 
-        Frame_login = Frame(self.window, bg='white')
-        Frame_login.place(x=0, y=0, height=700, width=1366)
-        label1 = Label(Frame_login, text="Hi! Welcome To Life Choices Online", font=('times new romain', 32, 'bold'), fg='black', bg='white')
-        label1.place(x=375, y=100)
-        label2 = Label(Frame_login, text="")
-        label2.place(x=235, y=160)
-        btn2 = Button(Frame_login, text="LOGOUT", command=self.Login, cursor="hand2", font=('times new romain', 15), fg='black', bg='white', bd=0, width=15, height=1)
-        btn2.place(x=1000, y=10)
+        self.img = PhotoImage(file="./images/life-choices-logo.png")
+        img = Label(Appscreen, image=self.img).place(x=150, y=0, width=440, height=100)
+
+        self.img2 = PhotoImage(file="./images/life-choices-logo.png")
+        img2 = Label(Appscreen, image=self.img2).place(x=400, y=300, width=440, height=100)
+
+        self.img3 = PhotoImage(file="./images/life-choices-logo.png")
+        img3 = Label(Appscreen, image=self.img3).place(x=800, y=100, width=440, height=100)
+
+        self.img4 = PhotoImage(file="./images/life-choices-logo.png")
+        img4 = Label(Appscreen, image=self.img4).place(x=650, y=550, width=440, height=100)
+
+        self.img5 = PhotoImage(file="./images/life-choices-logo.png")
+        img5 = Label(Appscreen, image=self.img5).place(x=1130, y=350, width=440, height=100)
+
+        self.img6 = PhotoImage(file="./images/life-choices-logo.png")
+        img6 = Label(Appscreen, image=self.img6).place(x=-235, y=350, width=440, height=100)
+
+        Appscreen_frame = Frame(self.window, bg='white')
+        Appscreen_frame.place(x=320, y=100, height=520, width=630)
+
+        label1 = Label(Appscreen_frame, text="Hi! Welcome To", font=('times new romain', 22, 'bold'), fg='black', bg='white')
+        label1.place(x=200, y=40)
+        label2 = Label(Appscreen_frame, text="Life Choices Online", font=('times new romain', 22, 'bold'), fg='black', bg='white')
+        label2.place(x=170, y=75)
+
+        lbl4 = Label(Appscreen_frame, text="Username:", font=('Arial', 20, 'bold'), fg='black', bg='white')
+        lbl4.place(x=90, y=195)
+        lbl5 = Label(Appscreen_frame, text=self.user_name.get(), font=('Arial', 20, 'bold'), fg='black', bg="white")
+        lbl5.place(x=300, y=195)
+
+        lbl2 = Label(Appscreen_frame, text='Login Time:', font=('Arial', 20, "bold"), bg='white', fg='black')
+        lbl2.place(x=90, y=245)
+        lbl3 = Label(Appscreen_frame, text=f"{dt.datetime.now():%a, %b %d %Y %H:%M:%S}", font=('Arial', 20, 'bold'), bg='white', fg='black')
+        lbl3.place(x=300, y=245)
+        btn2 = Button(Appscreen_frame, text="LOGOUT", command=self.logOut, cursor="hand2", font=('times new romain', 15), fg='black', bg='#8dc63f', bd=0, width=15, height=1)
+        btn2.place(x=200, y=400)
 
     def Admin(self):
         Frame_Admin = Frame(self.window, bg='#d9d9d9')
@@ -327,8 +463,8 @@ class Login:
         Admin_frame = Frame(self.window, bg='white')
         Admin_frame.place(x=320, y=130, height=450, width=350)
 
-        label1 = Label(Admin_frame, text="Login Here", font=('Arial', 32, 'bold'), fg='black', bg='white')
-        label1.place(x=75, y=20)
+        label1 = Label(Admin_frame, text="Admin Login", font=('Arial', 32, 'bold'), fg='black', bg='white')
+        label1.place(x=40, y=20)
 
         label2 = Label(Admin_frame, text='Username', font=('Arial', 20, 'bold'), fg='black', bg='white')
         label2.place(x=30, y=95)
@@ -348,9 +484,11 @@ class Login:
                       font=('Arial', 10), bg='white', fg='black', bd=0)
         btn3.place(x=1, y=390)
 
+        # ADMIN USERNAME AND PASSWORD
         self.userName = "Admin"
         self.passWord = "Admin1234"
 
+    # Admin login page, displays when clicking ctr+a
     def adminLogin(self):
         try:
             if self.user_name.get() == self.userName and (self.password.get()) == self.passWord:
@@ -363,10 +501,26 @@ class Login:
         except IndexError:
             messagebox.showerror("Error", "Please Enter a Valid Username and Password ")
 
+    # refreshes the admin page
+    def refresh_details(self):
+        self.admin()
+
+    # logout function
+    def logOut(self):
+        if messagebox.askyesno("confirm Log Out?", "Are you sure you want to Log Out?"):
+            self.Login()
+            date = f"{dt.datetime.now():%a, %b %d %Y %H:%M:%S}"
+            with open("User_Code.txt", 'a') as file:
+                file.write('LogOut Date and Time: ' + date + '\n' + '\n')
+        else:
+            return True
+
+    # Admin page
     def admin(self):
         Frame_admin = Frame(self.window, bg='#d9d9d9')
-        Frame_admin.place(x=0, y=0, height=700, width=1366)
+        Frame_admin.place(x=0, y=0, height=1500, width=1366)
 
+        # Displays the images
         self.img = PhotoImage(file="./images/life-choices-logo.png")
         img = Label(Frame_admin, image=self.img).place(x=150, y=0, width=440, height=100)
 
@@ -386,24 +540,32 @@ class Login:
         img6 = Label(Frame_admin, image=self.img6).place(x=-235, y=350, width=440, height=100)
 
         admin_frame = Frame(self.window, bg='white')
-        admin_frame.place(x=180, y=50, height=600, width=1000)
+        admin_frame.place(x=180, y=40, height=700, width=1000)
+
 
         def update(row):
             trv.delete(*trv.get_children())
             for i in row:
                 trv.insert("", 'end', values=i)
 
+        # This function gets the item that is searcher for
         def search():
+            con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
+            cur = con.cursor()
             q2 = q.get()
-            cur.execute("select id, name, surname from registration where name like '%"+q2+"%' or surname like '%"+q2 +"%'")
+            cur.execute("select id, name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber from registration where name like '%"+q2+"%' or surname like '%"+q2 +"%' or IDnumber like '%"+q2+"%' or phoneNumber like '%"+q2 +"%' or nxtOfKinName like '%"+q2+"%' or nxtOfKinNumber like '%"+q2 +"%'")
             row = cur.fetchall()
             update(row)
 
+        # This function clears the in info in the search bar
         def clear():
-            cur.execute("select id, name, surname from registration")
+            con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
+            cur = con.cursor()
+            cur.execute("select id, name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber from registration")
             row = cur.fetchall()
             update(row)
 
+        # This function allows admin to display the users details in the Data when double clicking on it in Details
         def getrow(event):
             rowid = trv.identify_row(event.y)
             item = trv.item(trv.focus())
@@ -415,7 +577,9 @@ class Login:
             t6.set(item['values'][5])
             t7.set(item['values'][6])
 
+        # Function that allows admin to make changes to the user
         def update_details():
+            User_id = t1.get()
             name = t2.get()
             surname = t3.get()
             ID = t4.get()
@@ -423,15 +587,17 @@ class Login:
             nxtName = t6.get()
             nxtNumber = t7.get()
             if messagebox.askyesno("confirm Please?", "Are you sure you want to update?"):
+                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
                 cur = con.cursor()
-                query = "UPDATE registration SET name=%, surname=%, IDnumber=%, phoneNumber=%, nxtOfName=%, nxtOfNumber=% WHERE id=%;"
-                cur.execute(query, (name, surname, ID, phone, nxtName, nxtNumber))
+                query = "UPDATE registration SET name=%s, surname=%s, IDnumber=%s, phoneNumber=%s, nxtOfKinName=%s, nxtOfKinNumber=%s WHERE id=%s"
+                cur.execute(query, (name, surname, ID, phone, nxtName, nxtNumber, User_id))
                 con.commit()
                 con.close()
                 clear()
             else:
                 return True
 
+        # Function that creates new user
         def add_new():
             name = t2.get()
             surname = t3.get()
@@ -441,25 +607,23 @@ class Login:
             nxtNumber = t7.get()
             con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
             cur = con.cursor()
-            cur.execute("insert into registration(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber) values(%s, %s, %s, %s, %s, %s)", (name.get(), surname.get(), ID.get(), phone.get(), nxtName.get(), nxtNumber.get()))
+            cur.execute("insert into registration(name, surname, IDnumber, phoneNumber, nxtOfKinName, nxtOfKinNumber) values(%s, %s, %s, %s, %s, %s)", (name, surname, ID, phone, nxtName, nxtNumber))
             con.commit()
             con.close()
 
+        # Delete function
         def delete_details():
             User_id = t1.get()
             if messagebox.askyesno("confirm Delete?", "Are you sure you want to delete this customer?"):
+                con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
                 cur = con.cursor()
-                query = "DELETE FROM registration WHERE id= "+User_id
-                cur.execute(query, (User_id))
+                query = "DELETE FROM registration WHERE id=%s" %(User_id)
+                cur.execute(query)
                 con.commit()
                 con.close()
                 clear()
             else:
                 return True
-
-        con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1',
-                              database='LifeChoices_Online')
-        cur = con.cursor()
 
         q = StringVar()
         t1 = StringVar()
@@ -471,18 +635,18 @@ class Login:
         t7 = StringVar()
 
         # Creates The Frames For Details, Search and Data
-        wrapper1 = LabelFrame(admin_frame, text="Details")
+        wrapper1 = LabelFrame(admin_frame, text="Details", bg='#8dc63f')
         wrapper2 = LabelFrame(admin_frame, text="Search")
         wrapper3 = LabelFrame(admin_frame, text="Data")
 
-        wrapper1.pack(fill="both", expand="yes", padx=20, pady=20)
-        wrapper2.pack(fill="both", expand="yes", padx=20, pady=20)
-        wrapper3.pack(fill="both", expand="yes", padx=20, pady=20)
+        wrapper1.place(x=25, y=10, width=950, height=200)
+        wrapper2.place(x=25, y=225, width=950, height=150)
+        wrapper3.place(x=25, y=390, width=950, height=300)
 
         # Displays The Headings In Details
-        trv = ttk.Treeview(wrapper1, column=(1, 2, 3, 4, 5, 6, 7), show="headings", height="6")
-        trv.pack()
-
+        trv = ttk.Treeview(wrapper1, column=(1, 2, 3, 4, 5, 6, 7), show="headings", height="7")
+        trv.pack(side=tk.LEFT)
+        trv.place(x=0, y=0)
         trv.heading(1, text="User_id")
         trv.heading(2, text="Name")
         trv.heading(3, text="Surname")
@@ -490,9 +654,29 @@ class Login:
         trv.heading(5, text="Phone Number")
         trv.heading(6, text="Next Of Kin Name")
         trv.heading(7, text="Next Of Kin Number")
+        trv.column(1, width=50, minwidth=100)
+        trv.column(2, width=150, minwidth=200)
+        trv.column(3, width=150, minwidth=200)
+        trv.column(4, width=150, minwidth=200)
+        trv.column(5, width=150, minwidth=200)
+        trv.column(6, width=150, minwidth=200)
+        trv.column(7, width=150, minwidth=200)
+
 
         trv.bind('<Double 1>', getrow)
 
+        # Vertical Scrollbar
+        yScrollBar = ttk.Scrollbar(wrapper1, orient="vertical", command=trv.yview)
+        yScrollBar.place(x=930, y=0, height=160)
+
+        # Horizontal Scrollbar
+        xScrollBar = ttk.Scrollbar(wrapper1, orient="horizontal", command=trv.xview)
+        xScrollBar.place(x=0, y=163, width=930)
+        trv.configure(yscrollcommand=yScrollBar.set, xscrollcommand=xScrollBar.set)
+
+        # Displaying the details in Details
+        con = pymysql.connect(user='lifechoices', password='@Lifechoices1234', host='127.0.0.1', database='LifeChoices_Online')
+        cur = con.cursor()
         cur.execute("select * from registration")
         row = cur.fetchall()
         update(row)
@@ -502,16 +686,16 @@ class Login:
         lbl.pack(side=tk.LEFT, padx=10)
         ent = Entry(wrapper2, textvariable=q)
         ent.pack(side=tk.LEFT, padx=6)
-        btn = Button(wrapper2, text="Search", command=search)
+        btn = Button(wrapper2, text="Search", command=search, bg='#8dc63f')
         btn.pack(side=tk.LEFT, padx=6)
-        clear_btn = Button(wrapper2, text="Clear", command=clear)
+        clear_btn = Button(wrapper2, text="Clear", command=clear, bg='#8dc63f')
         clear_btn.pack(side=tk.LEFT, padx=6)
 
         # User Data Labels and Entries
         lbl1 = Label(wrapper3, text="User_id")
         lbl1.grid(row=0, column=0, padx=5, pady=3)
-        ent1 = Entry(wrapper3, textvariable=t1)
-        ent1.grid(row=0, column=1, padx=5, pady=3)
+        self.ent1 = Entry(wrapper3, textvariable=t1)
+        self.ent1.grid(row=0, column=1, padx=5, pady=3)
 
         lbl2 = Label(wrapper3, text="Name")
         lbl2.grid(row=1, column=0, padx=5, pady=3)
@@ -543,13 +727,18 @@ class Login:
         ent7 = Entry(wrapper3, textvariable=t7)
         ent7.grid(row=6, column=1, padx=5, pady=3)
 
-        update_btn = Button(wrapper3, text="Update", command=update_details)
-        add_btn = Button(wrapper3, text="Add New", command=add_new)
-        delete_btn = Button(wrapper3, text="Delete", command=delete_details)
+        # Buttons
+        update_btn = Button(wrapper3, text="Update", command=update_details, bg='#8dc63f')
+        add_btn = Button(wrapper3, text="Add New", command=add_new, bg='#8dc63f')
+        delete_btn = Button(wrapper3, text="Delete", command=delete_details, bg='#8dc63f')
+        refresh_btn = Button(wrapper3, text="Refresh", command=self.refresh_details, bg='#8dc63f')
+        logout_btn = Button(wrapper3, text="LOGOUT", command=self.logOut, bg='#8dc63f')
 
         add_btn.grid(row=7, column=0, padx=5, pady=3)
         update_btn.grid(row=7, column=1, padx=5, pady=3)
         delete_btn.grid(row=7, column=2, padx=5, pady=3)
+        refresh_btn.place(x=720, y=205)
+        logout_btn.place(x=850, y=205)
 
 
 window = Tk()
