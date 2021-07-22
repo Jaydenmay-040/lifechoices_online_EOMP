@@ -1,5 +1,3 @@
-import datetime
-
 import rsaidnumber
 from tkinter import *
 from tkinter import messagebox
@@ -144,10 +142,32 @@ class Login:
         cur.execute("select * from Login where username=%s", self.Username_ent.get())
         row = cur.fetchone()
         if row!=None:
-            self.forgotPassword()
             self.list = []
             self.num = sorted(random.sample(range(1, 21), 4))
             print(self.num)
+            if not validate_email(self.Email_ent.get()):
+                messagebox.showerror("Error", "Ensure that your email is correct", parent=self.window)
+                sender_email = "jmay41020@gmail.com"
+                receiver_email = self.Email_ent.get()
+                sender_password = "JM@y41020"
+                subject = 'LifeChoices Online Code'
+                server = smtplib.SMTP('smtp.gmail.com',587)
+                server.starttls()
+                message = 'Your LifeChoices Online security code is: ' + str(self.num)
+                server.login(sender_email,sender_password)
+                print("Login successful")
+                server.sendmail(sender_email, receiver_email, subject, message)
+                # s = smtplib.SMTP('smtp.gmail.com', 587)
+                # sender_email = 'jmay41020@gmail.com'
+                # receiver_email = self.Email_ent.get()
+                # password = 'JM@Y41020'
+                # subject = 'LifeChoices Online Code'
+                # s.starttls()
+                # s.login(sender_email, password)
+                # message = 'Your LifeChoices Online security code is: ' + str(self.num)
+                # s.sendmail(sender_email, receiver_email, subject, message)
+                # s.quit()
+            self.forgotPassword()
         else:
             messagebox.showerror("Error", "Username doesn't Exist, Please try with another Username", parent=self.window)
 
@@ -182,6 +202,9 @@ class Login:
         label2 = Label(forgot_frame, text='Enter your four-digit-code', font=('Arial', 20, 'bold'), fg='black',
                        bg='white')
         label2.place(x=30, y=100)
+
+        label3 = Label(forgot_frame, text='(1-20)', font=('Arial', 20, 'bold'), fg='black', bg='white')
+        label3.place(x=150, y=140)
         self.first_entry = Entry(forgot_frame, font=('Arial', 15, 'bold'), bg='lightgray')
         self.first_entry.place(x=80, y=190, width=40)
         self.second_entry = Entry(forgot_frame, font=('Arial', 15, 'bold'), bg='lightgray')
